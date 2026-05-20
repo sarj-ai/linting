@@ -1,0 +1,32 @@
+name: python-lint CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/python-lint/**'
+      - '.github/workflows/python-ci.yml'
+  pull_request:
+    paths:
+      - 'packages/python-lint/**'
+      - '.github/workflows/python-ci.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+    defaults:
+      run:
+        working-directory: packages/python-lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - run: uv python install ${{ matrix.python-version }}
+      - run: uv sync --dev
+      - run: uv run pytest -q
+      - run: uv run ruff check src/ tests/
+      - run: uv build

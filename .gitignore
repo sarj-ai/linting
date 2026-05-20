@@ -1,0 +1,25 @@
+node_modules/
+dist/
+build/
+*.tgz
+.npm/
+
+__pycache__/
+*.py[co]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+*.egg-info/
+
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Cross-repo validation artifacts (large; not part of the package)
+analysis/cross-repo/
+analysis/patches/
+analysis/RULE_REVIEW.json
+analysis/RULE_REFINEMENT.json
