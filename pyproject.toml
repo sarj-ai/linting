@@ -1,8 +1,11 @@
+# Root pyproject.toml exists so pre-commit (which expects single-package
+# repos) can install sarj-python-lint directly from a git rev. Same source
+# layout as packages/python-lint/ — hatchling just points at it.
 [project]
 name = "sarj-python-lint"
 version = "0.1.2"
 description = "Custom Python + SQL lint rules — AST-based, pre-commit-friendly, hypermodern defaults"
-readme = "README.md"
+readme = "packages/python-lint/README.md"
 authors = [{ name = "sarj-ai" }]
 license = { text = "MIT" }
 requires-python = ">=3.11"
@@ -24,35 +27,13 @@ dependencies = [
 sarj-python-lint = "sarj_python_lint.__main__:main"
 
 [project.urls]
-Homepage = "https://github.com/sarj-ai/linting/tree/main/packages/python-lint"
+Homepage = "https://github.com/sarj-ai/linting"
 Repository = "https://github.com/sarj-ai/linting"
 Issues = "https://github.com/sarj-ai/linting/issues"
-
-[dependency-groups]
-dev = [
-  "pytest>=8.0",
-  "ruff>=0.6",
-]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/sarj_python_lint"]
-
-[tool.hatch.build.targets.sdist]
-include = [
-  "src",
-  "README.md",
-  "pyproject.toml",
-  ".pre-commit-hooks.yaml",
-]
-exclude = [
-  "tests/",
-  "**/__pycache__/",
-  "**/*.pyc",
-]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
+packages = ["packages/python-lint/src/sarj_python_lint"]
