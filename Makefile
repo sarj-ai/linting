@@ -1,43 +1,46 @@
-.PHONY: help build test publish-eslint publish-python-lint publish-lint-configs publish release
+SHELL := bash
+.SHELLFLAGS := -eu -o pipefail -c
+MAKEFLAGS += --warn-undefined-variables --no-builtin-rules
+
+.PHONY: help build test typecheck publish publish-typescript publish-python publish-sql publish-lint-configs publish-eslint-configs
 
 help:
-	@echo "Targets:"
-	@echo "  build                  Build all packages (npm pack + uv build)"
-	@echo "  test                   Run all package tests"
-	@echo "  publish-eslint         npm publish @sarj/eslint-plugin"
-	@echo "  publish-python-lint    PyPI publish sarj-python-lint"
-	@echo "  publish-lint-configs   PyPI publish sarj-lint-configs"
-	@echo "  publish                All three publishes in sequence"
-	@echo "  release                Bump versions, tag, push, publish (interactive)"
+	@echo "Targets: build | test | typecheck | publish-{typescript,python,sql,lint-configs,eslint-configs} | publish (all)"
+	@echo "Releases trigger via tag push: typescript-v* python-v* sql-v* lint-configs-v* eslint-configs-v*"
 
 build:
-	cd packages/eslint-plugin && npm pack --dry-run
-	cd packages/python-lint   && uv build --wheel --sdist
-	@if [ -d packages/lint-configs ]; then cd packages/lint-configs && uv build --wheel --sdist; fi
+	cd packages/typescript     && npm run build
+	cd packages/python         && uv build --wheel --sdist
+	cd packages/sql            && uv build --wheel --sdist
+	cd packages/lint-configs   && uv build --wheel --sdist
+	cd packages/eslint-configs && npm pack --dry-run
 
 test:
-	cd packages/eslint-plugin && npm test
-	cd packages/python-lint   && uv run pytest -q
-	@if [ -d packages/lint-configs ]; then cd packages/lint-configs && uv build --wheel >/dev/null && uv pip install --quiet --reinstall ./dist/*.whl && uv run --no-project pytest -q tests/; fi
+	cd packages/typescript     && npm test
+	cd packages/python         && uv run pytest -q
+	cd packages/sql            && uv run pytest -q
+	cd packages/lint-configs   && uv build --wheel >/dev/null && uv pip install --quiet --reinstall ./dist/*.whl && uv run --no-project pytest -q tests/
 
-publish-eslint:
+typecheck:
+	cd packages/python && uv run basedpyright src/
+	cd packages/sql    && uv run basedpyright src/
+	cd packages/typescript && npm run typecheck
+
+publish-typescript:
 	@test -n "$$NPM_TOKEN" || (echo "error: NPM_TOKEN unset"; exit 1)
-	cd packages/eslint-plugin && npm publish --access public
+	cd packages/typescript && npm publish --access public
 
-publish-python-lint:
-	@test -n "$$UV_PUBLISH_TOKEN" || (echo "error: UV_PUBLISH_TOKEN unset"; exit 1)
-	cd packages/python-lint && uv build --wheel --sdist && uv publish
+publish-python:
+	cd packages/python && uv build --wheel --sdist && uv publish
+
+publish-sql:
+	cd packages/sql && uv build --wheel --sdist && uv publish
 
 publish-lint-configs:
-	@test -d packages/lint-configs || (echo "skip: packages/lint-configs/ not present on this branch"; exit 0)
-	@test -n "$$UV_PUBLISH_TOKEN" || (echo "error: UV_PUBLISH_TOKEN unset"; exit 1)
 	cd packages/lint-configs && uv build --wheel --sdist && uv publish
 
-publish: publish-eslint publish-python-lint publish-lint-configs
+publish-eslint-configs:
+	@test -n "$$NPM_TOKEN" || (echo "error: NPM_TOKEN unset"; exit 1)
+	cd packages/eslint-configs && npm publish --access public
 
-release:
-	@echo "Usage: tag the commit, then 'git push --tags' to trigger the release.yml workflow."
-	@echo "Tag conventions:"
-	@echo "  eslint-plugin-vX.Y.Z   -> publish @sarj/eslint-plugin"
-	@echo "  python-lint-vX.Y.Z     -> publish sarj-python-lint"
-	@echo "  lint-configs-vX.Y.Z    -> publish sarj-lint-configs"
+publish: publish-typescript publish-python publish-sql publish-lint-configs publish-eslint-configs
