@@ -1,7 +1,3 @@
-# Pre-commit hook manifest at the repo root. The actual rule sources live
-# in packages/python-lint/. The root pyproject.toml installs the same code
-# so `sarj-python-lint` CLI is on PATH inside the hook's venv.
-
 - id: sarj-no-sequential-await
   name: 'sarj-lint: no sequential `await` in for-loop'
   entry: sarj-python-lint check --rule no-sequential-await
@@ -27,16 +23,11 @@
   types: [python]
 
 - id: sarj-enforce-timestamptz
-  name: 'sarj-lint: SQL TIMESTAMP must use WITH TIME ZONE (TIMESTAMPTZ)'
-  entry: sarj-python-lint check --rule enforce-timestamptz
+  name: 'sarj-lint(sql): TIMESTAMP must use WITH TIME ZONE (TIMESTAMPTZ)'
+  entry: sarj-sql-lint check --rule enforce-timestamptz
   language: python
   types: [sql]
-
-# ---------------------------------------------------------------------------
-# Postgres migration hygiene — pure regex pygrep hooks, no Python required.
-# Consumers should set `files: '<migrations-glob>'` to limit scope, and
-# `exclude: <legacy-file-list>` to grandfather pre-ratchet violations.
-# ---------------------------------------------------------------------------
+  additional_dependencies: ['sarj-sql-lint']
 
 - id: sarj-ban-postgres-enums
   name: 'sarj-lint(sql): ban native postgres ENUM types (prefer TEXT with CHECK)'
@@ -47,12 +38,6 @@
 - id: sarj-ban-create-trigger
   name: 'sarj-lint(sql): ban database triggers (prefer application-level logic)'
   entry: '(?i)CREATE TRIGGER'
-  language: pygrep
-  types: [sql]
-
-- id: sarj-require-if-not-exists-on-create
-  name: 'sarj-lint(sql): CREATE TABLE must use IF NOT EXISTS (idempotent DDL)'
-  entry: '(?i)CREATE TABLE(?! IF NOT EXISTS)'
   language: pygrep
   types: [sql]
 

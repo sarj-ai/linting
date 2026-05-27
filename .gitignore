@@ -3,23 +3,30 @@ dist/
 build/
 *.tgz
 .npm/
+*.tsbuildinfo
+.turbo/
+.tsup/
+.vitest-cache/
+.eslintcache
+coverage/
 
 __pycache__/
 *.py[co]
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
+.basedpyright/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
 .venv/
 venv/
 *.egg-info/
 
 .DS_Store
+Thumbs.db
 .idea/
 .vscode/
+.zed/
 *.swp
-
-# Cross-repo validation artifacts (large; not part of the package)
-analysis/cross-repo/
-analysis/patches/
-analysis/RULE_REVIEW.json
-analysis/RULE_REFINEMENT.json

@@ -11,13 +11,41 @@ line-ending              = "auto"
 [lint]
 select = ["ALL"]
 external = ["SARJ"]
+preview = true
 
 extend-select = [
   "ANN401",
   "RUF013",
+  "RUF022",
+  "RUF023",
+  "RUF052",
   "TC001",
   "TC002",
   "TC003",
+
+  "UP041",
+  "UP045",
+  "UP046",
+  "UP047",
+  "UP049",
+
+  "FURB101",
+  "FURB103",
+  "FURB113",
+  "FURB118",
+  "FURB148",
+  "FURB152",
+  "FURB154",
+  "FURB163",
+  "FURB166",
+  "FURB171",
+  "FURB177",
+  "FURB180",
+  "FURB192",
+
+  "ASYNC100",
+  "ASYNC105",
+  "ASYNC109",
 
   "B904",
   "S112",

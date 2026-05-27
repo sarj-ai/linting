@@ -10,6 +10,7 @@ import sarj from "@sarj/eslint-plugin";
 /** @type {import("eslint").Linter.Config[]} */
 const config = [
   ...tseslint.configs.strictTypeChecked,
+  ...tseslint.configs.stylisticTypeChecked,
 
   {
     plugins: {
@@ -33,6 +34,13 @@ const config = [
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-non-null-assertion": "error",
+      "@typescript-eslint/no-deprecated": "error",
+      "@typescript-eslint/only-throw-error": "error",
+      "@typescript-eslint/prefer-promise-reject-errors": "error",
+      "@typescript-eslint/no-meaningless-void-operator": "error",
+      "@typescript-eslint/no-mixed-enums": "error",
+      "@typescript-eslint/prefer-find": "error",
+      "@typescript-eslint/prefer-readonly": "error",
       "@typescript-eslint/no-unsafe-assignment": "error",
       "@typescript-eslint/no-unsafe-member-access": "error",
       "@typescript-eslint/no-unsafe-argument": "error",
@@ -87,6 +95,15 @@ const config = [
       "unicorn/filename-case": ["error", { cases: { kebabCase: true, pascalCase: true } }],
       "unicorn/prefer-switch": "warn",
       "unicorn/no-array-for-each": "warn",
+      "unicorn/no-useless-undefined": "error",
+      "unicorn/prefer-node-protocol": "error",
+      "unicorn/prefer-string-replace-all": "error",
+      "unicorn/prefer-top-level-await": "error",
+      "unicorn/no-await-expression-member": "error",
+      "unicorn/prefer-structured-clone": "error",
+      "unicorn/prefer-logical-operator-over-ternary": "error",
+      "unicorn/relative-url-style": ["error", "never"],
+      "unicorn/throw-new-error": "error",
 
       "zod/prefer-enum-over-literal-union": "error",
 

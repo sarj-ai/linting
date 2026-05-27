@@ -1,15 +1,15 @@
-name: python CI
+name: sql CI
 
 on:
   push:
     branches: [main]
     paths:
-      - 'packages/python/**'
-      - '.github/workflows/python-ci.yml'
+      - 'packages/sql/**'
+      - '.github/workflows/sql-ci.yml'
   pull_request:
     paths:
-      - 'packages/python/**'
-      - '.github/workflows/python-ci.yml'
+      - 'packages/sql/**'
+      - '.github/workflows/sql-ci.yml'
 
 permissions:
   contents: read
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: packages/python
+        working-directory: packages/sql
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5

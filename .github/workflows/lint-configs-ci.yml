@@ -13,6 +13,13 @@ on:
       - 'configs/**'
       - '.github/workflows/lint-configs-ci.yml'
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -21,9 +28,10 @@ jobs:
         working-directory: packages/lint-configs
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
+          cache-dependency-glob: 'packages/**/uv.lock'
       - run: uv python install 3.13
       - name: Build wheel
         run: uv build --wheel
