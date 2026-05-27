@@ -24,6 +24,8 @@ from sarj_python_lint.rule_base import Diagnostic, Rule
 
 
 class PreferStrEnum(Rule):
+    """Choice-shaped str field — prefer StrEnum or Literal."""
+
     id = "prefer-str-enum"
     code = "SARJ006"
     description = "Pydantic str field with choice-like default — prefer StrEnum."

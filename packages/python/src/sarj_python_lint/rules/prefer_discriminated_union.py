@@ -42,6 +42,8 @@ IGNORED_OPTIONAL_FIELDS = {
 
 
 class PreferDiscriminatedUnion(Rule):
+    """Pydantic BaseModel with success:bool — prefer a discriminated union."""
+
     id = "prefer-discriminated-union"
     code = "SARJ005"
     description = "BaseModel with `success: bool` + Optional siblings — use a discriminated union."

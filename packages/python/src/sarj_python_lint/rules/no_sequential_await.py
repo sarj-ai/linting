@@ -17,6 +17,8 @@ from sarj_python_lint.rule_base import Diagnostic, Rule
 
 
 class NoSequentialAwait(Rule):
+    """Sequential await calls in a loop that could be parallelized."""
+
     id = "no-sequential-await"
     code = "SARJ001"
     description = "Sequential `await` in a for-loop — prefer asyncio.gather."

@@ -18,6 +18,8 @@ from sarj_python_lint.rule_base import Diagnostic, Rule
 
 
 class InefficientStringConcatInLoop(Rule):
+    """O(n²) string concatenation in a loop."""
+
     id = "inefficient-string-concat-in-loop"
     code = "SARJ002"
     description = "`s += '...'` in a loop is O(n²); append to a list and join."

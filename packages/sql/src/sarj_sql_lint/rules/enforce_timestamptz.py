@@ -18,6 +18,8 @@ PATTERN = re.compile(
 
 
 class EnforceTimestamptz(Rule):
+    """Postgres TIMESTAMP without WITH TIME ZONE — use TIMESTAMPTZ."""
+
     id = "enforce-timestamptz"
     code = "SARJ101"
     description = "TIMESTAMP without TIME ZONE — use TIMESTAMPTZ."
